@@ -6,7 +6,7 @@ FRACTOL_H =	-I includes/
 
 LIBFT_H = 	-I src/libft/
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g
 
 CC = clang
 

@@ -6,7 +6,7 @@
 /*   By: rtacos <rtacos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/29 17:16:06 by rtacos            #+#    #+#             */
-/*   Updated: 2020/07/30 20:20:44 by rtacos           ###   ########.fr       */
+/*   Updated: 2020/07/31 18:30:20 by rtacos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # define WIN_WID 2400
 # define WIN_HIG 1350
 # define MANDELBROT 1
-# define ZOOM 20
+# define ZOOM 0.002
 # define ITER_MAX 200
 
 typedef struct	s_fr
@@ -32,15 +32,15 @@ typedef struct	s_fr
 	void	*win_ptr;
 }				t_fr;
 
-extern struct	s_color
+struct	s_color
 {
-	int r;
-	int g;
-	int b;
+	double r;
+	double g;
+	double b;
 	int al;
-}				g_color;
+}		g_color;
 
-void		print_mandelbr(void);
-void		init_img(void);
+void		print_mandelbr(int **img_data);
+void		init_img(t_fr *fr, int **img_data, void **img_ptr);
 
 #endif
