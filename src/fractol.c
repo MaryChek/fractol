@@ -6,47 +6,36 @@
 /*   By: rtacos <rtacos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/29 17:15:57 by rtacos            #+#    #+#             */
-/*   Updated: 2020/07/31 17:32:07 by rtacos           ###   ########.fr       */
+/*   Updated: 2020/08/29 18:53:06 by rtacos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_fractol.h"
 
-void	print_fract(int **img_data)
+void	init_mandelbr(void)
 {
-	print_mandelbr(img_data);
+	g_fr.check_pix_iter = check_iter_mandelbr;
 }
 
-int		init_mandelbr(void)
-{
-	return (MANDELBROT);
-}
-
-int		init_fractal(char *fract)
+void	init_fractal(char *fract)
 {
 	if (!ft_strcmp(fract, "Mandelbrot"))
-			return (init_mandelbr());
-	return 0;
+			init_mandelbr();
 }
 
 int		main(int ac, char **av)
 {
-	t_fr	fr;
-	int		*img_data;
-	void	*img_ptr = NULL;
-	
-	
 	if (ac == 2)
 	{
-		init_img(&fr, &img_data, &img_ptr);
+		init_img();
+		init_cl();
 		init_fractal(av[1]);
-		print_fract(&img_data);
-		mlx_put_image_to_window(fr.mlx_ptr, fr.win_ptr, img_ptr, 0, 0);
-		mlx_loop(fr.mlx_ptr);
+		print_fract(&g_fr.img_data, g_fr.check_pix_iter);
+		mlx_put_image_to_window(g_fr.mlx_ptr, g_fr.win_ptr, g_fr.img_ptr, 0, 0);
+		mlx_hook(g_fr.win_ptr, 2, 1L << 0, key_press, 0);
+		mlx_loop(g_fr.mlx_ptr);
 	}
 	else
-	{
 		write(1, "usage: ./fractol name_fractal\n\nName_fractal:\n\t- Mandelbrot", 58);
-	}
 	return (0);
 }

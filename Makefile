@@ -20,7 +20,7 @@ OBJ_DIR =	obj/
 
 LIB_DIR = src/libft/
 
-SRCS = fractol.c print_fract.c
+SRCS = fractol.c print_fract.c func_key_press.c
 
 CFIND =	$(SRCS:%=$(SRC_DIR)%)
 
