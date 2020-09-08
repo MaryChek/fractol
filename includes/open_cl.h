@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   open_cl.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rtacos <rtacos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/14 16:20:40 by rtacos            #+#    #+#             */
-/*   Updated: 2020/09/04 16:59:39 by rtacos           ###   ########.fr       */
+/*   Created: 2020/09/01 17:56:43 by rtacos            #+#    #+#             */
+/*   Updated: 2020/09/08 18:50:21 by rtacos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef OPEN_CL_H
+#define OPEN_CL_H
 
-char	*ft_strjoin(char const *s1, char const *s2)
+typedef struct s_color
 {
-	char	*s3;
-	size_t	len;
+	double	r;
+	double	g;
+	double	b;
+}				t_color;
 
-	if (s1 && s2)
-	{
-		len = ft_strlen(s1) + ft_strlen(s2);
-		if ((s3 = ft_strnew(len)))
-		{
-			s3 = ft_strcpy(s3, s1);
-			s3 = ft_strcat(s3, s2);
-			return (s3);
-		}
-	}
-	return (NULL);
-}
+typedef	struct	s_coord
+{
+	double	x;
+	double	y;
+}				t_coord;
+
+int				get_color(t_color color);
+
+#endif

@@ -12,6 +12,8 @@ CC = clang
 
 MLX = -lmlx -framework OpenGL -framework AppKit
 
+OPENCL = -framework OpenCL
+
 COMP =	$(CC) $(CFLAGS) $(FRACTOL_H) $(LIB_DIR)$(LIBFTA)
 
 SRC_DIR =	src/
@@ -20,7 +22,7 @@ OBJ_DIR =	obj/
 
 LIB_DIR = src/libft/
 
-SRCS = fractol.c print_fract.c func_key_press.c
+SRCS = fractol.c func_key_press.c cl.c
 
 CFIND =	$(SRCS:%=$(SRC_DIR)%)
 
@@ -40,7 +42,7 @@ $(NAME): $(OBJ_DIR) $(OBJ)
 	@make -C $(LIB_DIR)
 	@cp $(LIB_DIR)$(LIBFTA) .
 	@mv $(LIBFTA) $(NAME)
-	$(COMP) $(MLX) $(addprefix $(SRC_DIR), $(SRCS)) -o $(NAME)
+	$(COMP) $(MLX) $(OPENCL) $(addprefix $(SRC_DIR), $(SRCS)) -o $(NAME)
 
 clean:
 	@/bin/rm -rf $(OBJ_DIR)
