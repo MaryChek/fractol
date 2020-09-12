@@ -4,9 +4,11 @@ LIBFTA = libft.a
 
 FRACTOL_H =	-I includes/
 
+HEAD = includes/ft_fractol.h
+
 LIBFT_H = 	-I src/libft/
 
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Wall -Wextra -Werror
 
 CC = clang
 
@@ -14,7 +16,7 @@ MLX = -lmlx -framework OpenGL -framework AppKit
 
 OPENCL = -framework OpenCL
 
-COMP =	$(CC) $(CFLAGS) $(FRACTOL_H) $(LIB_DIR)$(LIBFTA)
+COMP =	$(CC) $(CFLAGS) $(FRACTOL_H) $(LIBFT_H) $(LIB_DIR)$(LIBFTA)
 
 SRC_DIR =	src/
 
@@ -22,7 +24,8 @@ OBJ_DIR =	obj/
 
 LIB_DIR = src/libft/
 
-SRCS = fractol.c func_key_press.c cl.c
+SRCS = fractol.c keyb_and_mouse.c cl.c init_fracts.c init_jul_fracts.c \
+read_file.c error.c str_help.c clear_cl.c draw.c
 
 CFIND =	$(SRCS:%=$(SRC_DIR)%)
 
@@ -35,8 +38,8 @@ all: $(NAME)
 $(OBJ_DIR):
 		@mkdir -p $(OBJ_DIR)
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c
-		@$(CC) $(CFLAGS) -c $< -o $@
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEAD)
+		@$(CC) $(CFLAGS) $(FRACTOL_H) $(LIBFT_H) -c $< -o $@
 
 $(NAME): $(OBJ_DIR) $(OBJ)
 	@make -C $(LIB_DIR)

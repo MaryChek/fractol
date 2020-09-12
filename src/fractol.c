@@ -6,71 +6,90 @@
 /*   By: rtacos <rtacos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/29 17:15:57 by rtacos            #+#    #+#             */
-/*   Updated: 2020/09/08 19:49:58 by rtacos           ###   ########.fr       */
+/*   Updated: 2020/09/11 22:05:21 by rtacos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/ft_fractol.h"
+#include "ft_fractol.h"
 
-void	cl_error(char *error_mess)
+char	*selection_of_fractol(int num_fract)
 {
-	ft_putstr_fd(error_mess, 1);
-	exit(0);
+	if (num_fract == MANDELBROT)
+		return (MANDELBROT_SRC);
+	if (num_fract == JULIA)
+		return (JULIA_SRC);
+	if (num_fract == BURN_SHIP)
+		return (BURN_SHIP_SRC);
+	if (num_fract == JULIA_BR_SH)
+		return (JULIA_BR_SH_SRC);
+	if (num_fract == FISH)
+		return (FISH_SRC);
+	if (num_fract == JUL_FISH)
+		return (JUL_FISH_SRC);
+	return (NULL);
 }
 
-void	init_img(void)
+void	init_img(t_fr *frac)
 {
 	int		bpp;
 	int		size_line;
 	int		endian;
 
-	g_fr.color = 0x7403dd;
-	g_fr.iter_max = 200;
-	g_cl.y_shift = 0;
-	g_cl.x_shift = 0;
-	g_fr.zoom = (double)(WIN_HIG > WIN_WID ? 2.5 / WIN_WID : 2.5 / WIN_HIG);
-	g_fr.mouse.x = 0.0;
-	g_fr.mouse.y = 0.0;
-	g_fr.mlx_ptr = mlx_init();
-	g_fr.win_ptr = mlx_new_window(g_fr.mlx_ptr, WIN_WID, WIN_HIG, "fractol");
-	g_fr.img_ptr = mlx_new_image(g_fr.mlx_ptr, WIN_WID, WIN_HIG);
-	g_fr.img_data = (int *)mlx_get_data_addr(g_fr.img_ptr, &bpp, &size_line, &endian);
-	g_fr.mv_mouse.x = - (WIN_WID / 2) * g_fr.zoom;
-	g_fr.mv_mouse.y = - (WIN_HIG / 2) * g_fr.zoom;
-	g_fr.speed_zm = 1.055;
-	g_fr.button_jul = 0;
-	g_fr.mouse.y = 0;
-	g_fr.mouse.x = 0;
+	bpp = 32;
+	size_line = WIN_WID;
+	endian = 0;
+	frac->mlx_ptr = mlx_init();
+	frac->win_ptr = mlx_new_window(frac->mlx_ptr, WIN_WID, WIN_HIG, "fractol");
+	frac->img_ptr = mlx_new_image(frac->mlx_ptr, WIN_WID, WIN_HIG);
+	frac->img_data = (int *)mlx_get_data_addr(frac->img_ptr,
+												&bpp, &size_line, &endian);
+	frac->help = 0;
 }
 
-int		init_fractal(char *fract)
+void	init_ptr_fr(t_pft init_fr[6])
 {
-	int		ret;
+	init_fr[0] = &init_mandelbrot;
+	init_fr[1] = &init_julia;
+	init_fr[2] = &init_burn_ship;
+	init_fr[3] = &init_jul_burn_ship;
+	init_fr[4] = &init_fish;
+	init_fr[5] = &init_jul_fish;
+}
 
-	ret = 1;
+int		init_fractal(char *fract, t_pft init_fr[6], t_fr *frac)
+{
+	init_ptr_fr(init_fr);
 	if (!ft_strcmp(fract, "Mandelbrot"))
-		g_fr.num_fract = MANDELBROT;
+		return ((init_fr[0](frac)));
 	else if (!ft_strcmp(fract, "Julia"))
-		g_fr.num_fract = JULIA;
-	else
-		ret = 0;
-	return (ret);
+		return ((init_fr[1](frac)));
+	else if (!ft_strcmp(fract, "Burn_ship"))
+		return ((init_fr[2](frac)));
+	else if (!ft_strcmp(fract, "Jul_Burn_ship"))
+		return ((init_fr[3](frac)));
+	else if (!ft_strcmp(fract, "Fish"))
+		return ((init_fr[4](frac)));
+	else if (!ft_strcmp(fract, "Jul_fish"))
+		return ((init_fr[5](frac)));
+	return (0);
 }
 
 int		main(int ac, char **av)
 {
-	if (ac == 2 && init_fractal(av[1]))
+	t_data	data;
+
+	if (ac == 2 && init_fractal(av[1], data.init_fr, &data.frac))
 	{
-		init_img();
-		init_cl();
-		run_cl();
-		mlx_put_image_to_window(g_fr.mlx_ptr, g_fr.win_ptr, g_fr.img_ptr, 0, 0);
-		mlx_hook(g_fr.win_ptr, 2, 1L << 0, key_press, 0);
-		mlx_hook(g_fr.win_ptr, 4, 1L << 0, mouse_press, 0);
-		mlx_hook(g_fr.win_ptr, 6, 1L << 0, mouse_move, 0);
-		mlx_loop(g_fr.mlx_ptr);
+		init_img(&data.frac);
+		init_cl(&data.frac.cl, data.frac.img_data);
+		run_cl(&data.frac);
+		mlx_hook(data.frac.win_ptr, 2, 1L << 0, key_press, &data);
+		mlx_hook(data.frac.win_ptr, 4, 1L << 0, mouse_press, &data.frac);
+		mlx_hook(data.frac.win_ptr, 6, 1L << 0, mouse_move, &data.frac);
+		mlx_hook(data.frac.win_ptr, 17, 0, clos_e, 0);
+		mlx_loop(data.frac.mlx_ptr);
 	}
 	else
-		write(1, "usage: ./fractol name_fractal\n\nName_fractal:\n\t- Mandelbrot\n\t- Julia", 67);
+		write_usage();
 	return (0);
 }
