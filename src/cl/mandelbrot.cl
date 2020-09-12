@@ -29,7 +29,7 @@ __kernel void	check_iter(__global int *img, int color, int win_wid, int win_hig,
 	x_st = (double)(((gid % win_wid) + x_shift) * zoom + mouse.x);
 	y_st = (double)(((gid / win_wid) + y_shift) * zoom + mouse.y);
 	iter = -1;
-	while ((x * x + y * y) <= 20.00 && ++iter < (int)iter_max)
+	while ((x * x + y * y) <= 200.00 && ++iter < (int)iter_max)
 	{
 		tmp = x;
 		x = tmp * tmp - y * y + x_st;

@@ -2,11 +2,17 @@ NAME = fractol
 
 LIBFTA = libft.a
 
+SRC_DIR =	src/
+
+OBJ_DIR =	obj/
+
+LIB_DIR = libft/
+
 FRACTOL_H =	-I includes/
 
 HEAD = includes/ft_fractol.h
 
-LIBFT_H = 	-I src/libft/
+LIBFT_H = -I $(LIB_DIR)
 
 CFLAGS = -Wall -Wextra -Werror
 
@@ -17,12 +23,6 @@ MLX = -lmlx -framework OpenGL -framework AppKit
 OPENCL = -framework OpenCL
 
 COMP =	$(CC) $(CFLAGS) $(FRACTOL_H) $(LIBFT_H) $(LIB_DIR)$(LIBFTA)
-
-SRC_DIR =	src/
-
-OBJ_DIR =	obj/
-
-LIB_DIR = src/libft/
 
 SRCS = fractol.c keyb_and_mouse.c cl.c init_fracts.c init_jul_fracts.c \
 read_file.c error.c str_help.c clear_cl.c draw.c

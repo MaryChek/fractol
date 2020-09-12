@@ -6,7 +6,7 @@
 /*   By: rtacos <rtacos@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/10 03:48:38 by rtacos            #+#    #+#             */
-/*   Updated: 2020/09/11 22:05:38 by rtacos           ###   ########.fr       */
+/*   Updated: 2020/09/12 18:59:09 by rtacos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	write_usage(void)
 {
 	write(1, "usage: ./fractol name_fractal\n\n", 31);
 	write(1, "Name_fractal:\n\t- Mandelbrot\n\t- Julia\n\t", 38);
-	write(1, "- Burn_ship\n\t- Jul_Burn_ship\n\t- Fish\n\t- Jul_fish", 48);
+	write(1, "- Burn_ship\n\t- Jul_Burn_ship\n\t- Fish\n\t- Jul_fish\n", 49);
 }
 
 void	print_error_log(t_cl cl)
